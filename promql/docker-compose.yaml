@@ -1,5 +1,5 @@
 services:
-  main-app:  
+  main-app:
     #используем файл с переменными среды
     env_file:
       - ./.env
@@ -11,7 +11,6 @@ services:
       - "${MAIN_APP_PORT}:${MAIN_APP_PORT}"
     hostname: fastapi_app
 
-
   prometheus:
     image: prom/prometheus
     command:
@@ -21,3 +20,13 @@ services:
     volumes:
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     hostname: prometheus
+
+  grafana:
+    image: grafana/grafana
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
